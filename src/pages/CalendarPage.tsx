@@ -1,26 +1,28 @@
 import React, {Component} from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text, View } from 'react-native';
 import { Card, Button, Icon } from 'react-native-elements';
+import styles from "styles";
 
 interface Props {}
 export default class CalendarPage extends Component<Props> {
   static navigationOptions = {
     title: 'Kalender',
-    tabBarIcon: <Ionicons name={'md-calendar'} size={25} color={'gray'} />
+    tabBarIcon: <Icon type={'ionicon'} name={'md-calendar'} size={25} color={'gray'} />
   };
   render() {
+    const { navigation } = this.props;
     return (
-      <View>
-        <Card
-          title='HELLO WORLD'>
-          <Text style={{marginBottom: 10}}>
-            The idea with React Native Elements is more about component structure than actual design.
+      <View style={styles.app}>
+        <Button
+          icon={<Icon name='md-add' type={'ionicon'} size={40} color='#ffffff' />}
+          buttonStyle={styles.add_calendar}
+          onPress={() => {
+            navigation.navigate('Add');
+          }} />
+        <Card containerStyle={styles.calendar_card}>
+          <Text style={styles.calendar_card_text}>
+            ott.artur1992@gmail.com
           </Text>
-          <Button
-            icon={<Icon name='code' color='#ffffff' />}
-            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor: '#03A9F4'}}
-            title='VIEW NOW' />
         </Card>
       </View>
     );

@@ -52,22 +52,37 @@ const styles = StyleSheet.create({
 
 import React, {Component} from 'react';
 import { StatusBar } from 'react-native';
-import { Calendar, Settings } from 'pages';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { AddCalendar, Calendar, Settings } from 'pages';
+import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { STATUSBAR_BACKGROUND } from 'styles/Colors';
 
 const MainNavigator = createBottomTabNavigator({
   Calender: {screen: Calendar},
   Settings: {screen: Settings}
 });
 
-const Navigator = createAppContainer(MainNavigator);
+const CalendarNavigator = createStackNavigator({
+  AddCalendar: AddCalendar
+},
+{
+  headerMode: 'none'
+});
+
+const Navigator = createAppContainer(createStackNavigator({
+  Main: MainNavigator,
+  Add: CalendarNavigator
+},
+{
+  initialRouteName: 'Main',
+  headerMode: 'none'
+}));
 
 interface Props {}
 export default class App extends Component<Props> {
   render() {
     return (
       <>
-        <StatusBar translucent backgroundColor={'#F2F2F2'} />
+        <StatusBar backgroundColor={STATUSBAR_BACKGROUND} />
         <Navigator />
       </>
     );

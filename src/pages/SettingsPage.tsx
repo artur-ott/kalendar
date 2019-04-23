@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Icon } from 'react-native-elements';
 import {Text, View} from 'react-native';
 
 interface Props {}
 export default class SettingsPage extends Component<Props> {
   static navigationOptions = {
     title: 'Einstellungen',
-    tabBarIcon: <Ionicons name={'md-settings'} size={25} color={'gray'} />
+    tabBarIcon: <Icon type={'ionicon'} name={'md-settings'} size={25} color={'gray'} />
   };
   render() {
     return (
