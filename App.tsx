@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 
 import React, {Component} from 'react';
 import { StatusBar } from 'react-native';
-import { AddCalendar, Calendar, Settings } from 'pages';
+import { AddCalendar, AuthorizeCalendar, Calendar, Settings } from 'pages';
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { STATUSBAR_BACKGROUND } from 'styles/Colors';
 
@@ -62,7 +62,8 @@ const MainNavigator = createBottomTabNavigator({
 });
 
 const CalendarNavigator = createStackNavigator({
-  AddCalendar: AddCalendar
+  AddCalendar: AddCalendar,
+  AuthorizeCalendar: AuthorizeCalendar,
 },
 {
   headerMode: 'none'

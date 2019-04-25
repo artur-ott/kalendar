@@ -58,3 +58,7 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+# Security
+src/security/*
+!src/security/package.json
