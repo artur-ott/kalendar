@@ -4,9 +4,20 @@ import { WebView } from 'react-native-webview';
 import Credentials from 'security/Credentials'
 import styles from "styles";
 
-interface Props {}
+interface Navigation {
+  goBack: Function;
+  getParam: Funktion
+}
+interface Props {
+  navigation: Navigation; 
+}
 export default class AuthorizeCalendarPage extends Component<Props> {
+  static navigationOptions = {
+    title: "Berechtigung erteilen"
+  };
+
   render() {
+    const addKey = this.props.navigation.getParam('addKey', () => {});
     return (
       <View style={styles.app}>
         <WebView
@@ -15,7 +26,8 @@ export default class AuthorizeCalendarPage extends Component<Props> {
             const { url } = nativeEvent;
             if (url.startsWith('http://localhost:8080/')) {
               const code = url.substr(28).split('&scope')[0];
-              console.error(code);
+              addKey(code);
+              this.props.navigation.goBack();
             }
           }}
           cacheEnabled={false}

@@ -62,3 +62,4 @@ buck-out/
 # Security
 src/security/*
 !src/security/package.json
+!src/security/index.tsx
