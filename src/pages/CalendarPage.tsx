@@ -12,7 +12,9 @@ interface Props {
 }
 
 interface Calendar {
-  name: string
+  name: string;
+  key: string;
+  colors: Array<number>;
 }
 
 interface State {
@@ -42,6 +44,16 @@ export default class CalendarPage extends Component<Props> {
     }
   }
 
+  addCalendar() {
+    const that = this;
+    return (calendar: Calendar) => {
+      let calendars = that.state.calendars;
+      calendars.push(calendar);
+      that.setState({calendars});
+      Drive.getInstance().updateCalendars(calendars);
+    }
+  }
+
   componentDidMount(){
     Drive.getInstance().getAllCalendars(this.updateCalendars());
   }
@@ -65,7 +77,9 @@ export default class CalendarPage extends Component<Props> {
           }
           buttonStyle={styles.add_calendar}
           onPress={() => {
-            navigation.navigate("Add");
+            navigation.navigate("Add", {
+              addCalendar: this.addCalendar()
+            });
           }}
         />
         <ScrollView
@@ -78,7 +92,9 @@ export default class CalendarPage extends Component<Props> {
         >
           {calendars.map((calendar, i) => (
           <TouchableOpacity key={i} onPress={() => {
-            navigation.navigate("Update");
+            navigation.navigate("Update", {
+              calendar: this.state.calendars[i]
+            });
           }}>
             <Card containerStyle={styles.calendar_card}>
               <Text style={styles.calendar_card_text}>

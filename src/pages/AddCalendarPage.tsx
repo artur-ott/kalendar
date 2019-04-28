@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Button, Input } from "react-native-elements";
 import styles from "styles";
 import { ActivitySelector, ColorSelector } from "templates";
+import { Calendar } from 'communication';
 import {
   CALENDAR_COLORS_DEFAULT,
   CALENDAR_COLORS_LAVENDEL,
@@ -34,6 +35,7 @@ const COLORS = [
 
 interface Navigation {
   navigate: Function;
+  getParam: Function;
 }
 interface Props {
   navigation: Navigation;
@@ -73,7 +75,7 @@ export default class AddCalendarPage extends Component<Props> {
     const that = this;
     return (key: string) => {
       that.setState({key, authorize: true});
-      that.checkNameAndKey(that, key)
+      that.checkNameAndKey(that, key);
     }
   }
 
@@ -81,7 +83,7 @@ export default class AddCalendarPage extends Component<Props> {
     const that = this;
     return (name: string) => {
       that.setState({name});
-      that.checkNameAndKey(that)
+      that.checkNameAndKey(that, undefined);
     }
   }
 
@@ -89,7 +91,28 @@ export default class AddCalendarPage extends Component<Props> {
     const {name, key} = that.state;
     if (name.length > 0 && (key.length > 0 || keyChanged && keyChanged.length > 0)) {
       that.setState({add: true});
+    } else {
+      that.setState({add: false});
     }
+  }
+
+  addCalendar() {
+    const that = this;
+    return () => {
+      Calendar.getInstance().getRefreshKey(that.state.key, that.saveCalendar(that));
+    }
+  }
+
+  saveCalendar(that: AddCalendarPage) {
+    const addCalendar = this.props.navigation.getParam('addCalendar', (calendar: object) => {console.error('foo')});
+    return (key: string) => {
+      addCalendar({
+        key,
+        name: that.state.name,
+        colors: that.state.colors
+      });
+      that.props.navigation.navigate('Main');
+    };
   }
 
   render() {
@@ -168,7 +191,7 @@ export default class AddCalendarPage extends Component<Props> {
             justifyContent: "flex-end"
           }}
         >
-          <Button title={"hinzufügen"} disabled={!this.state.add} />
+          <Button title={"hinzufügen"} disabled={!this.state.add} onPress={this.addCalendar()} />
         </View>
       </View>
     );

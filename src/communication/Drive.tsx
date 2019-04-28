@@ -1,5 +1,4 @@
 import { Drive as Credentials } from "security";
-import { CalendarPage } from "pages";
 
 export default class Drive {
   static _instance: Drive;
@@ -65,6 +64,34 @@ export default class Drive {
       .then(responseJson => {
         if (!this._wait) {
           update(responseJson);
+        }
+      })
+      .catch(error => {
+        throw Error(`Could not get any calendar data! (${error})`);
+      });
+  }
+
+  updateCalendars(calendars: Array<object>) {
+    if (this.key === null) {
+      this.refreshKey();
+      setTimeout(() => this.updateCalendars(calendars), 500);
+      return;
+    }
+
+    fetch(`${Credentials.update_uri}/${Credentials.file_id}?uploadType=media`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.key}`
+      },
+      body: JSON.stringify(calendars)
+    })
+      .then(response => {
+        if (response.status === 401) {
+          this.refreshKey();
+          this._wait = true;
+          setTimeout(() => this.updateCalendars(calendars), 500);
         }
       })
       .catch(error => {

@@ -3,10 +3,11 @@ import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Credentials from 'security/Credentials'
 import styles from "styles";
+import CookieManager from 'react-native-cookies';
 
 interface Navigation {
   goBack: Function;
-  getParam: Funktion
+  getParam: Function
 }
 interface Props {
   navigation: Navigation; 
@@ -18,6 +19,7 @@ export default class AuthorizeCalendarPage extends Component<Props> {
 
   render() {
     const addKey = this.props.navigation.getParam('addKey', () => {});
+    CookieManager.clearAll();
     return (
       <View style={styles.app}>
         <WebView
