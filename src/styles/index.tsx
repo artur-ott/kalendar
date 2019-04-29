@@ -3,9 +3,10 @@ import {
     BACKGROUND,
     BUTTON_BACKGROUND,
     CARD_TEXT,
-    CALENDAR_COLORS_DEFAULT
+    CALENDAR_COLORS_DEFAULT,
+    DELETE_BUTTON_BACKGROUND
 } from "styles/Colors";
-import { PADDINGL } from "styles/Sizes";
+import { PADDINGL, MARGINL } from "styles/Sizes";
 
 
 export default StyleSheet.create({
@@ -24,6 +25,10 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         color:CARD_TEXT
+    },
+    calendar_delete_button: {
+        backgroundColor: DELETE_BUTTON_BACKGROUND,
+        marginTop: MARGINL,
     },
 
 

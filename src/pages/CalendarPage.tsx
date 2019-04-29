@@ -54,6 +54,26 @@ export default class CalendarPage extends Component<Props> {
     }
   }
 
+  updateCalendar() {
+    const that = this;
+    return (id: number, name: string, colors: Array<number>) => {
+      let calendars = that.state.calendars;
+      calendars[id].name = name;
+      calendars[id].colors = colors;
+      this.setState({calendars});
+      Drive.getInstance().updateCalendars(calendars);
+    }
+  }
+
+  deleteCalendar() {
+    const that = this;
+    return (id: number) => {
+      let calendars = that.state.calendars.filter((el, i) => i !== id);
+      this.setState({calendars});
+      Drive.getInstance().updateCalendars(calendars);
+    }
+  }
+
   componentDidMount(){
     Drive.getInstance().getAllCalendars(this.updateCalendars());
   }
@@ -93,7 +113,10 @@ export default class CalendarPage extends Component<Props> {
           {calendars.map((calendar, i) => (
           <TouchableOpacity key={i} onPress={() => {
             navigation.navigate("Update", {
-              calendar: this.state.calendars[i]
+              calendar: this.state.calendars[i],
+              id: i,
+              update: this.updateCalendar(),
+              delete: this.deleteCalendar(),
             });
           }}>
             <Card containerStyle={styles.calendar_card}>

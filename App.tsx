@@ -6,7 +6,7 @@ import { STATUSBAR_BACKGROUND } from 'styles/Colors';
 
 const MainNavigator = createBottomTabNavigator({
   Calender: {screen: Calendar},
-  Settings: {screen: Settings}
+  // Settings: {screen: Settings}
 });
 
 const AddNavigator = createStackNavigator({

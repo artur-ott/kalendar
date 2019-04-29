@@ -42,22 +42,28 @@ interface Props {
 }
 
 interface State {
+  id: number;
   name: string;
   loaded: boolean;
   colors: Array<number>;
   colorSelectorVisible: boolean;
   currentActivity: number;
   update: boolean;
+  updateCalendar: (id: number, name: string, colors: Array<number>) => void;
+  deleteCalendar: (id: number) => void;
 }
 
 export default class UpdateCalendarPage extends Component<Props> {
   state: State = {
+    id: -1,
     name: "",
     loaded: false,
     colors: [0, 0, 0, 0, 0],
     colorSelectorVisible: false,
     currentActivity: -1,
-    update: true
+    update: true,
+    updateCalendar: (id: number, name: string, colors: Array<number>) => {},
+    deleteCalendar: (id: number) => {}
   };
 
   showColorSelector(id: number) {
@@ -95,11 +101,17 @@ export default class UpdateCalendarPage extends Component<Props> {
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {
-    const { navigation } = props;
     if (!state.loaded) {
+      const { navigation } = props;
       const calendar = navigation.getParam('calendar', {name: '', colors: [0, 0, 0, 0, 0]});
+      const id = navigation.getParam('id', -1);
+      const update = navigation.getParam('update', (id: number, name: string, colors: Array<number>) => {});
+      const deleteCalendar = navigation.getParam('delete', (id: number) => {});
       state.name = calendar.name;
       state.colors = calendar.colors;
+      state.id = id;
+      state.updateCalendar = update;
+      state.deleteCalendar = deleteCalendar;
       state.loaded = true;
     }
     return state;
@@ -164,7 +176,18 @@ export default class UpdateCalendarPage extends Component<Props> {
             justifyContent: "flex-end"
           }}
         >
-          <Button title={"updaten"} disabled={!this.state.update} onPress={() => {}} />
+          <Button title={"Updaten"} disabled={!this.state.update}
+            onPress={ () => {
+              this.state.updateCalendar(this.state.id, this.state.name, this.state.colors);
+              this.props.navigation.navigate('Main');
+            }}
+          />
+          <Button title={"Löschen"} buttonStyle={styles.calendar_delete_button}
+            onPress={ () => {
+              this.state.deleteCalendar(this.state.id);
+              this.props.navigation.navigate('Main');
+            }}
+          />
         </View>
       </View>
     );
