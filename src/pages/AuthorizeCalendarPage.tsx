@@ -3,7 +3,14 @@ import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Credentials from 'security/Credentials'
 import styles from "styles";
-import CookieManager from 'react-native-cookies';
+import CookieManager from "react-native-cookies";
+
+interface NativeEvent {
+  url: string;
+}
+interface Event {
+  nativeEvent : NativeEvent;
+}
 
 interface Navigation {
   goBack: Function;
@@ -18,13 +25,13 @@ export default class AuthorizeCalendarPage extends Component<Props> {
   };
 
   render() {
-    const addKey = this.props.navigation.getParam('addKey', () => {});
     CookieManager.clearAll();
+    const addKey = this.props.navigation.getParam('addKey', () => {});
     return (
       <View style={styles.app}>
         <WebView
-          onError={syntheticEvent => {
-            const { nativeEvent } = syntheticEvent;
+          onLoadStart={ (syntheticEvent: Event) => {
+            const {nativeEvent} = syntheticEvent;
             const { url } = nativeEvent;
             if (url.startsWith('http://localhost:8080/')) {
               const code = url.substr(28).split('&scope')[0];

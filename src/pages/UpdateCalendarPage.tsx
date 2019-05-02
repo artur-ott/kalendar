@@ -176,7 +176,7 @@ export default class UpdateCalendarPage extends Component<Props> {
             justifyContent: "flex-end"
           }}
         >
-          <Button title={"Updaten"} disabled={!this.state.update}
+          <Button title={"Aktualisieren"} disabled={!this.state.update}
             onPress={ () => {
               this.state.updateCalendar(this.state.id, this.state.name, this.state.colors);
               this.props.navigation.navigate('Main');
